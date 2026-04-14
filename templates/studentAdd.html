@@ -1,0 +1,19 @@
+<form method="POST">
+    <label for="studentID">ID</label>
+    <input type="number" id="studentID" name="studentID">
+
+    <label for="studentName">Name</label>
+    <input type="text" id="studentName" name="studentName">
+
+    <label for="studentDept">Department</label>
+    <select id="studentDept" name="studentDept">
+        {% for dept in depts %}
+        <option value="{{ dept }}">{{ dept }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="studentCred">Credit</label>
+    <input type="number" id="studentCredit" name="studentCredit">
+
+    <input type="submit">
+</form>

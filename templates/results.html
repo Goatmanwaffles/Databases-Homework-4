@@ -1,0 +1,19 @@
+<h1>Results</h1>
+
+{% if (data|length > 0) %}
+<table>
+<tr> 
+    <th>ID: </th>
+    <th>NAME: </th>
+    <th>MAJOR: </th>
+    <th>CREDIT: </th>
+</tr>
+{% for row in data %}
+<tr>
+{% for d in row %}
+<td>{{d}}</td>
+{% endfor %} 
+</tr>
+{% endfor %}
+</table>
+{% endif %}

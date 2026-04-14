@@ -14,3 +14,59 @@ app.debug = True
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/nameSearch", methods=['POST', 'GET'])
+def studentSearch():
+    if request.method == 'POST':
+        name = request.form['studentName']
+        id = request.form['studentID']
+        data = []
+        if(id != '' or name != ''):
+            cursor = db.cursor()        
+            if name:
+                name = f"{name}%"
+                cursor.execute("SELECT * from student where name LIKE %s", [name])
+            if id:
+                id = f"{id}%"
+                cursor.execute("SELECT * from student where ID LIKE %s", [id])
+                    
+            data = cursor.fetchall()        
+            cursor.close()
+            print("Found: ", data)
+        return render_template('results.html', data=data)
+    if request.method == 'GET':
+        
+        return render_template('studentSearch.html')
+
+@app.route("/addStudent", methods=['POST', 'GET'])
+def addStudent():
+    cursor = db.cursor()
+    cursor.execute("SELECT dept_name from department")
+    data = cursor.fetchall()
+    depts = []
+    for d in data:
+        depts.append(d[0])
+    print(depts)
+    cursor.close()
+    
+    if request.method == 'POST':
+        id = request.form['studentID']
+        print(id)
+        name = request.form['studentName']
+        print(name)
+        dept = request.form['studentDept']
+        print(dept)
+        credit = request.form['studentCredit']
+        print(credit)
+        cursor = db.cursor()
+        if name and id and dept and credit:
+            cursor.execute("INSERT INTO student (ID, name, dept_name, tot_cred) VALUES (%s, %s, %s, %s)", [id, name, dept, credit])
+        cursor.close()
+        db.commit()
+        return render_template('studentAdd.html', depts = depts)
+
+    if request.method == 'GET':
+        return render_template('studentAdd.html', depts = depts)
+
+if __name__ == '__main__':
+    app.run(host="localhost", port=4500)

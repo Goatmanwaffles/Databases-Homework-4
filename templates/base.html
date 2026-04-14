@@ -1,0 +1,14 @@
+<head>
+    <link href="{{url_for('static',filename='css/output.css')}}" rel="stylesheet">
+</head>
+
+<body>
+    <div id="nav" class="flex flex-row bg-blue-500 gap-4">
+        <a href="/nameSearch" class="p-8 border-4 border-blue-600 bg-blue-700 text-white font-bold">Student Search</a>
+        <a href="/addStudent" class="p-8 border-4 border-blue-600 bg-blue-700 text-white font-bold">Student Add</a>
+        <a href="/" class="p-8 border-4 border-blue-600 bg-blue-700 text-white font-bold">Home</a>
+    </div>
+    <div id="content" class="w-full h-full bg-slate-600 text-gray-50 flex">
+        {% block content %}{% endblock %}
+    </div>
+</body>

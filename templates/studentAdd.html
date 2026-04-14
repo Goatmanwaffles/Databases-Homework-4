@@ -1,19 +1,23 @@
-<form method="POST">
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" class="font-semibold flex flex-col">
     <label for="studentID">ID</label>
-    <input type="number" id="studentID" name="studentID">
+    <input type="number" id="studentID" name="studentID" class="shadow border-2 rounded border-gray-200 bg-slate-300 text-black mb-4">
 
     <label for="studentName">Name</label>
-    <input type="text" id="studentName" name="studentName">
+    <input type="text" id="studentName" name="studentName" class="shadow border-2 rounded border-gray-200 bg-slate-300 text-black mb-4">
 
     <label for="studentDept">Department</label>
-    <select id="studentDept" name="studentDept">
+    <select id="studentDept" name="studentDept" class="shadow border-2 rounded border-gray-200 bg-slate-300 text-black mb-4">
         {% for dept in depts %}
         <option value="{{ dept }}">{{ dept }}</option>
         {% endfor %}
     </select>
 
     <label for="studentCred">Credit</label>
-    <input type="number" id="studentCredit" name="studentCredit">
+    <input type="number" id="studentCredit" name="studentCredit" class="shadow border-2 rounded border-gray-200 bg-slate-300 text-black mb-4">
 
-    <input type="submit">
+    <input type="submit" class="p-2 rounded-xl bg-sky-400 animate hover:bg-sky-600">
 </form>
+
+{% endblock %}

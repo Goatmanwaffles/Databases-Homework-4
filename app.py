@@ -51,13 +51,9 @@ def addStudent():
     
     if request.method == 'POST':
         id = request.form['studentID']
-        print(id)
         name = request.form['studentName']
-        print(name)
         dept = request.form['studentDept']
-        print(dept)
         credit = request.form['studentCredit']
-        print(credit)
         cursor = db.cursor()
         if name and id and dept and credit:
             cursor.execute("INSERT INTO student (ID, name, dept_name, tot_cred) VALUES (%s, %s, %s, %s)", [id, name, dept, credit])
@@ -67,6 +63,35 @@ def addStudent():
 
     if request.method == 'GET':
         return render_template('studentAdd.html', depts = depts)
+
+
+@app.route("/schedule/<int:studentID>", methods=['GET'])
+def getStudentSchedule(studentID):
+    cursor = db.cursor()
+    cursor.execute("SELECT s.name, t.ID, t.course_id, t.semester, t.year FROM student s JOIN takes t on s.id = t.id WHERE s.id = %s", (studentID))
+    schedule = cursor.fetchall()
+    cursor.close()
+    years = []
+    for section in schedule:
+        if section[4] not in years:
+            years.append(section[4])
+    return render_template('studentSchedule.html', schedule=schedule, years=years)
+    
+@app.route("/schedule/<int:studentID>", methods=['POST'])
+def filterStudentSchedule(studentID):
+    year = request.form['filterYear']
+    cursor = db.cursor()
+    #FIND ALL YEARS
+    cursor.execute("SELECT DISTINCT year FROM takes WHERE id = %s", (studentID))
+    years = [row[0] for row in cursor.fetchall()]
+
+    #FIND RELEVANT CLASSES
+    cursor.execute("SELECT s.name, t.ID, t.course_id, t.semester, t.year FROM student s JOIN takes t on s.id = t.id WHERE s.id = %s AND t.year = %s", (studentID, year))
+    schedule = cursor.fetchall()
+
+    #RENDER
+    cursor.close()
+    return render_template('studentSchedule.html', schedule=schedule, years=years, selected_year = year)
 
 if __name__ == '__main__':
     app.run(host="localhost", port=4500)

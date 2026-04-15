@@ -1,22 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Results</h1>
+<h1 class="font-bold text-3xl mb-4">Results</h1>
 
 {% if (data|length > 0) %}
-<table>
-<tr> 
-    <th>ID: </th>
-    <th>NAME: </th>
-    <th>MAJOR: </th>
-    <th>CREDIT: </th>
-</tr>
-{% for row in data %}
-<tr>
-{% for d in row %}
-<td>{{d}}</td>
-{% endfor %} 
-</tr>
-{% endfor %}
+<div class="mt-4 w-full">
+<table class="w-full text-sm border-collapse">
+  <thead>
+    <tr class="border-b border-gray-200">
+      <th class="text-left px-4 py-3 text-lg font-semibold text-sky-500 uppercase"">ID</th>
+      <th class="text-left px-4 py-3 text-lg font-semibold text-sky-500 uppercase">Name</th>
+      <th class="text-left px-4 py-3 text-lg font-semibold text-sky-500 uppercase">Major</th>
+      <th class="text-left px-4 py-3 text-lg font-semibold text-sky-500 uppercase">Credits</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-100">
+    {% for row in data %}
+    <tr class="hover:bg-gray-400 transition-colors">
+      {% for d in row %}
+      <td class="px-4 py-3 text-white">{{ d }}</td>
+      {% endfor %}
+      <td class="px-4 py-3">
+        <a href="/schedule/{{ row[0] }}"
+           class="px-3 py-1.5 text-xs font-medium rounded-md border border-gray-200 text-white bg-sky-500">
+          Schedule
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
+</div>
+
 {% endif %}
 {% endblock %}
